@@ -19,6 +19,7 @@
         <div class="bg-white rounded-2xl shadow-2xl p-8">
 
             <h2 class="text-xl font-bold text-gray-800 mb-1">Selamat Datang</h2>
+            <p class="text-gray-500 text-sm mb-6">Silakan login untuk melanjutkan</p>
 
             <!-- Alert Error -->
             <% if (typeof error !== 'undefined') { %>
@@ -28,7 +29,7 @@
             <% } %>
 
             <!-- Form Login -->
-            <form action="/login" method="POST" id="formLogin">
+            <form action="/auth/login" method="POST" id="formLogin">
 
                 <!-- Email -->
                 <div class="mb-4">
@@ -58,7 +59,11 @@
 
                 <!-- Tombol Login -->
                 <button type="submit" class="w-full text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<<<<<<< HEAD
+                    Login Sekarang
+=======
                     Login
+>>>>>>> efb460ba898835f1859ed38c1d5362c153de5d78
                 </button>
 
             </form>
@@ -66,7 +71,11 @@
             <!-- Link ke Register -->
             <p class="text-center text-sm mt-5 text-gray-600">
                 Belum punya akun? 
+<<<<<<< HEAD
+                <a href="/auth/register" class="text-purple-600 font-semibold hover:underline">Daftar disini</a>
+=======
                 <a href="/register" class="text-purple-600 font-semibold hover:underline">Sign Up</a>
+>>>>>>> efb460ba898835f1859ed38c1d5362c153de5d78
             </p>
 
         </div>

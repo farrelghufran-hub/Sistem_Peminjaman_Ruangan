@@ -7,8 +7,9 @@ const multer         = require('multer');
 const express = require('express');
 >>>>>>> efb460ba898835f1859ed38c1d5362c153de5d78
 require('dotenv').config();
+require('./config/database'); 
 
-require('./config/database');
+const authController = require('./controllers/authController');
 
 <<<<<<< HEAD
 const { isAuthenticated, isGuest }       = require('./middleware/authMiddleware');
@@ -89,19 +90,18 @@ app.use((err, req, res, next) => {  // eslint-disable-line no-unused-vars
 const app = express();
 const PORT = 3000;
 
-// Setup EJS sebagai template engine
 app.set('view engine', 'ejs');
-app.set('views', './views');
 
-app.use(express.static('.'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); 
 
-// Route utama
-app.get('/', (req, res) => {
-    res.send('Server Peminjaman Ruangan Jalan!');
-});
+// --- ROUTES GET (Tampilan Halaman) ---
+app.get('/', (req, res) => res.render('login'));
+app.get('/auth/login', (req, res) => res.render('login'));
+app.get('/auth/register', (req, res) => res.render('register'));
+app.get('/dashboard', (req, res) => res.render('dashboard')); 
 
+<<<<<<< HEAD
 // Route Login
 app.get('/auth/login', (req, res) => {
     res.render('login');
@@ -112,6 +112,11 @@ app.get('/auth/register', (req, res) => {
     res.render('register');
 >>>>>>> efb460ba898835f1859ed38c1d5362c153de5d78
 });
+=======
+// --- ROUTES POST (Proses Data Form) ---
+app.post('/auth/register', authController.registerProses);
+app.post('/auth/login', authController.loginProses); 
+>>>>>>> 96186608a6dece065b8c5cd22aadb0ef58c44d0b
 
 app.listen(PORT, () => {
     console.log(`Server jalan di http://localhost:${PORT}`);
