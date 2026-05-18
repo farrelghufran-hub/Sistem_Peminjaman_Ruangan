@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Peminjaman Ruangan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+
+    <div class="w-full max-w-md px-4">
+
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-white">Peminjaman Ruangan</h1>
+            <p class="text-purple-200 text-sm mt-1">Sistem Manajemen Ruangan FTI</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+
+            <h2 class="text-xl font-bold text-gray-800 mb-1">Selamat Datang</h2>
+            <p class="text-gray-500 text-sm mb-6">Silakan login untuk melanjutkan</p>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+    <div class="bg-red-100 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+        <%= error %>
+    </div>
+<% } %>
+
+            <form action="/auth/login" method="POST" id="formLogin">
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="email">Email</label>
+                    <input 
+                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition duration-200" 
+                        type="email" 
+                        id="email"
+                        name="email" 
+                        placeholder="contoh@email.com"
+                    >
+                    <p class="text-red-500 text-xs mt-1 hidden" id="errorEmail">Email tidak boleh kosong</p>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="password">Password</label>
+                    <input 
+                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition duration-200" 
+                        type="password" 
+                        id="password"
+                        name="password" 
+                        placeholder="Masukkan password"
+                    >
+                    <p class="text-red-500 text-xs mt-1 hidden" id="errorPassword">Password tidak boleh kosong</p>
+                </div>
+
+                <button type="submit" class="w-full text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    Login Sekarang
+                </button>
+
+            </form>
+
+            <p class="text-center text-sm mt-5 text-gray-600">
+                Belum punya akun? 
+                <a href="/auth/register" class="text-purple-600 font-semibold hover:underline">Daftar disini</a>
+            </p>
+
+        </div>
+
+        <p class="text-center text-purple-200 text-xs mt-4">© 2026 Peminjaman Ruangan FTI</p>
+    </div>
+
+    <script>
+        document.getElementById('formLogin').addEventListener('submit', function(e) {
+            let valid = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorEmail = document.getElementById('errorEmail');
+            const errorPassword = document.getElementById('errorPassword');
+
+            errorEmail.classList.add('hidden');
+            errorPassword.classList.add('hidden');
+
+            if (email === '') {
+                errorEmail.textContent = 'Email tidak boleh kosong';
+                errorEmail.classList.remove('hidden');
+                valid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorEmail.textContent = 'Format email tidak valid';
+                errorEmail.classList.remove('hidden');
+                valid = false;
+            }
+
+            if (password === '') {
+                errorPassword.textContent = 'Password tidak boleh kosong';
+                errorPassword.classList.remove('hidden');
+                valid = false;
+            }
+
+            if (!valid) e.preventDefault();
+        });
+    </script>
+
+</body>
+</html>

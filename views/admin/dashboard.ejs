@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Peminjaman Ruangan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col justify-between">
+
+    <nav class="bg-slate-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold tracking-wide text-purple-400">🛡️ AdminPanel FTI</span>
+                </div>
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-semibold text-slate-200"><%= user.nama %></p>
+                            <p class="text-xs text-purple-300 font-medium">Penanggung Jawab</p>
+                        </div>
+                        <% if (user.foto_profil) { %>
+                            <img src="/uploads/profil/<%= user.foto_profil %>" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover border-2 border-purple-400">
+                        <% } else { %>
+                            <div class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center font-bold text-white">
+                                <%= user.nama.charAt(0).toUpperCase() %>
+                            </div>
+                        <% } %>
+                        <form action="/auth/logout" method="POST" class="m-0">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <% if (typeof flashSuccess !== 'undefined' && flashSuccess) { %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl mb-6 text-sm shadow-sm">
+                <span class="font-bold">Sukses:</span> <%= flashSuccess %>
+            </div>
+        <% } %>
+
+        <div class="bg-gradient-to-r from-slate-800 to-slate-950 text-white rounded-2xl p-6 sm:p-8 shadow-lg mb-8">
+            <h1 class="text-2xl sm:text-3xl font-extrabold">Ruang Kerja Penanggung Jawab 🛠️</h1>
+            <p class="text-slate-300 text-sm mt-2 max-w-2xl">Kelola data master operasional, lakukan validasi kelayakan dokumen, serta pantau jadwal penggunaan ruang lingkup Fakultas.</p>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-amber-600 uppercase tracking-wider">Pending Validasi</p>
+                <p class="text-3xl font-black text-gray-800 mt-2">5</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-green-600 uppercase tracking-wider">Booking Aktif</p>
+                <p class="text-3xl font-black text-gray-800 mt-2">12</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-blue-600 uppercase tracking-wider">Total Ruangan</p>
+                <p class="text-3xl font-black text-gray-800 mt-2">8</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-purple-600 uppercase tracking-wider">Total Anggota</p>
+                <p class="text-3xl font-black text-gray-800 mt-2">34</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">📋 Persetujuan Berkas Masuk</h3>
+                    <p class="text-gray-400 text-xs mb-4">Verifikasi surat izin peminjaman ruang kuliah.</p>
+                    <p class="text-gray-600 text-sm mb-6">Tinjau kesesuaian berkas identitas (KTM), batasan jam peminjaman, serta keperluan acara organisasi/mahasiswa sebelum menerbitkan status persetujuan.</p>
+                </div>
+                <a href="/admin/bookings" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center py-2.5 rounded-xl text-sm font-semibold transition tracking-wide block">
+                    Buka Validasi Pengajuan
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">⚙️ Manajemen Data Fasilitas</h3>
+                    <p class="text-gray-400 text-xs mb-4">Konfigurasi kapasitas dan status aktif ruangan.</p>
+                    <p class="text-gray-600 text-sm mb-6">Tambahkan data laboratorium baru, perbarui inventaris pelengkap (proyektor/AC), atau nonaktifkan ruangan tertentu secara berkala jika sedang dalam perbaikan.</p>
+                </div>
+                <a href="/admin/rooms" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-center py-2.5 rounded-xl text-sm font-semibold transition tracking-wide block">
+                    Kelola Kamar & Ruangan
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
+        <p>© 2026 Panel Manajemen FTI • Kelompok 8</p>
+    </footer>
+
+</body>
+</html>

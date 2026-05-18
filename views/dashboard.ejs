@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Peminjaman Ruangan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col justify-between">
+
+    <nav class="bg-white shadow-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-indigo-600 tracking-wide">🏫 PinjamRuang FTI</span>
+                </div>
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-semibold text-gray-700"><%= user.nama %></p>
+                            <p class="text-xs text-gray-500 capitalize"><%= user.role %></p>
+                        </div>
+                        <% if (user.foto_profil) { %>
+                            <img src="/uploads/profil/<%= user.foto_profil %>" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover border-2 border-indigo-500">
+                        <% } else { %>
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-600">
+                                <%= user.nama.charAt(0).toUpperCase() %>
+                            </div>
+                        <% } %>
+                        <form action="/auth/logout" method="POST" class="m-0">
+                            <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <% if (typeof flashSuccess !== 'undefined' && flashSuccess) { %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl mb-6 text-sm shadow-sm">
+                <span class="font-bold">Sukses:</span> <%= flashSuccess %>
+            </div>
+        <% } %>
+        
+        <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl mb-6 text-sm shadow-sm">
+                <%= successMsg %>
+            </div>
+        <% } %>
+
+        <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-xl mb-6 text-sm shadow-sm">
+                <ul class="list-disc pl-5">
+                    <% errors.forEach(function(err) { %>
+                        <li><%= err %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Selamat Datang, <%= user ? user.nama : 'Pengguna' %>! 👋</h1>
+                <p class="text-gray-500 text-sm mt-1">Sistem fasilitasi peminjaman ruang kelas, aula, dan laboratorium Fakultas Teknologi Informasi.</p>
+            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 capitalize">
+                Status: <%= user ? user.role : 'Aktif' %>
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4">🏢</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Daftar Ruangan</h3>
+                    <p class="text-gray-500 text-sm mb-4">Lihat katalog fasilitas kampus, kapasitas ruangan, beserta status ketersediaan secara real-time.</p>
+                </div>
+                <a href="/rooms" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
+                    Lihat Ruangan
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4">📝</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Ajukan Permohonan</h3>
+                    <p class="text-gray-500 text-sm mb-4">Isi formulir peminjaman jadwal kegiatan, isi keperluan, dan unggah berkas kelengkapan KTM/Surat Izin.</p>
+                </div>
+                <a href="/bookings/add" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
+                    Buat Booking Baru
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-2xl mb-4">⏳</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Status & Riwayat</h3>
+                    <p class="text-gray-500 text-sm mb-4">Pantau berkas reservasi Anda apakah sudah diverifikasi atau membutuhkan revisi berkas dari penanggung jawab.</p>
+                </div>
+                <a href="/bookings/my" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
+                    Cek Riwayat Saya
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
