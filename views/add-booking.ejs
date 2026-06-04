@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajukan Peminjaman - PinjamRuang FTI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <nav class="bg-white shadow-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-indigo-600 tracking-wide">🏫 PinjamRuang FTI</span>
+                </div>
+                <div class="flex items-center">
+                    <a href="/dashboard" class="text-sm font-semibold text-gray-600 hover:text-indigo-600 transition">
+                        &larr; Batal & Kembali
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800">Formulir Pengajuan Ruangan 📝</h1>
+            <p class="text-gray-500 text-sm mt-2">Lengkapi data di bawah ini. Pastikan berkas pendukung sudah sesuai ketentuan Fakultas.</p>
+        </div>
+
+        <% if (typeof flashError !== 'undefined' && flashError && flashError.length > 0) { %>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-xl mb-6 shadow-sm">
+                <p class="font-bold mb-1">Terjadi Kesalahan:</p>
+                <ul class="list-disc pl-5 text-sm">
+                    <% flashError.forEach(function(err) { %>
+                        <li><%= err %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/bookings/add" method="POST" enctype="multipart/form-data" class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 space-y-6">
+            
+            <div>
+                <label for="ruangan_id" class="block text-sm font-semibold text-gray-700 mb-1">Pilih Ruangan <span class="text-red-500">*</span></label>
+              <select name="ruangan_id" id="ruangan_id" required class="...">
+    <option value="" disabled>-- Silakan Pilih Ruangan --</option>
+    <% if (typeof ruangan !== 'undefined' && ruangan) { %>
+        <% ruangan.forEach(r => { %>
+            <option value="<%= r.ruangan_id %>" <%= selectedRoom == r.ruangan_id ? 'selected' : '' %>>
+                <%= r.nama_ruangan %>
+            </option>
+        <% }) %>
+    <% } %>
+</select>
+<input type="hidden" name="ruangan_id_final" id="ruangan_id_final" value="<%= selectedRoom %>">
+            </div>
+
+            <div>
+                <label for="tanggal_kegiatan" class="block text-sm font-semibold text-gray-700 mb-1">Tanggal Kegiatan <span class="text-red-500">*</span></label>
+                <input type="date" name="tanggal_kegiatan" id="tanggal_kegiatan" required class="w-full rounded-lg border-gray-300 border px-4 py-2.5 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label for="jam_mulai" class="block text-sm font-semibold text-gray-700 mb-1">Jam Mulai <span class="text-red-500">*</span></label>
+                    <input type="time" name="jam_mulai" id="jam_mulai" step="900" required class="w-full rounded-lg border-gray-300 border px-4 py-2.5 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+                </div>
+                <div>
+                    <label for="jam_selesai" class="block text-sm font-semibold text-gray-700 mb-1">Jam Selesai <span class="text-red-500">*</span></label>
+                    <input type="time" name="jam_selesai" id="jam_selesai" step="900" required class="w-full rounded-lg border-gray-300 border px-4 py-2.5 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+                </div>
+            </div>
+
+            <div>
+                <label for="keterangan_kegiatan" class="block text-sm font-semibold text-gray-700 mb-1">Keterangan Kegiatan / Tujuan <span class="text-red-500">*</span></label>
+                <textarea name="keterangan_kegiatan" id="keterangan_kegiatan" rows="4" placeholder="Jelaskan secara singkat kegiatan yang akan dilakukan..." required minlength="10" class="w-full rounded-lg border-gray-300 border px-4 py-2.5 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition"></textarea>
+            </div>
+
+            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-indigo-500 transition cursor-pointer bg-gray-50">
+                <label for="surat_pengajuan" class="block text-sm font-semibold text-gray-700 mb-2 cursor-pointer">Unggah Surat Peminjaman / KTM <span class="text-red-500">*</span></label>
+                <input type="file" name="surat_pengajuan" id="surat_pengajuan" accept=".pdf,.jpg,.jpeg,.png" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition cursor-pointer mx-auto">
+            </div>
+
+            <div class="pt-4 border-t border-gray-100">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg py-3 rounded-xl transition shadow-md hover:shadow-lg">
+                    Kirim Pengajuan
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500 mt-auto">
+        &copy; <%= new Date().getFullYear() %> Fakultas Teknologi Informasi Universitas Andalas.
+    </footer>
+</body>
+</html>
